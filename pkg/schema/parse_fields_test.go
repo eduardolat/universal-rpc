@@ -9,36 +9,36 @@ func TestParseFields(t *testing.T) {
 
 	unparsedFields := map[string]any{
 		"foo": map[string]any{
-			"Type": "string",
+			"type": "string",
 		},
 		"bar": map[string]any{
-			"Type":     "boolean",
-			"Required": false,
+			"type":     "boolean",
+			"required": false,
 		},
 		"aaa": map[string]any{
-			"Type": "number",
+			"type": "number",
 		},
 		"bbb": map[string]any{
-			"Type": "null",
+			"type": "null",
 		},
 		"ccc": map[string]any{
-			"Type": "any",
+			"type": "any",
 		},
 		"baz": map[string]any{
-			"Type": "array",
-			"Items": map[string]any{
-				"Type":     "string",
-				"Required": false,
+			"type": "array",
+			"items": map[string]any{
+				"type":     "string",
+				"required": false,
 			},
 		},
 		"qux": map[string]any{
-			"Type": "object",
-			"Properties": map[string]any{
+			"type": "object",
+			"properties": map[string]any{
 				"foo": map[string]any{
-					"Type": "string",
+					"type": "string",
 				},
 				"bar": map[string]any{
-					"Type": "boolean",
+					"type": "boolean",
 				},
 			},
 		},
@@ -130,7 +130,7 @@ func TestParseField(t *testing.T) {
 
 	t.Run("Must parse basic field", func(t *testing.T) {
 		_, err := parseField(map[string]any{
-			"Type": "string",
+			"type": "string",
 		})
 		if err != nil {
 			t.Error(err)
@@ -139,7 +139,7 @@ func TestParseField(t *testing.T) {
 
 	t.Run("Must be required by default and if specified respect the value", func(t *testing.T) {
 		parsedField, err := parseField(map[string]any{
-			"Type": "string",
+			"type": "string",
 		})
 		if err != nil {
 			t.Error(err)
@@ -149,8 +149,8 @@ func TestParseField(t *testing.T) {
 		}
 
 		parsedField, err = parseField(map[string]any{
-			"Type":     "string",
-			"Required": true,
+			"type":     "string",
+			"required": true,
 		})
 		if err != nil {
 			t.Error(err)
@@ -160,8 +160,8 @@ func TestParseField(t *testing.T) {
 		}
 
 		parsedField, err = parseField(map[string]any{
-			"Type":     "string",
-			"Required": false,
+			"type":     "string",
+			"required": false,
 		})
 		if err != nil {
 			t.Error(err)
@@ -173,7 +173,7 @@ func TestParseField(t *testing.T) {
 
 	t.Run("Should ignore fields with unknown types", func(t *testing.T) {
 		parsedField, err := parseField(map[string]any{
-			"Type": "Other-Random-Thing",
+			"type": "Other-Random-Thing",
 		})
 		if err != nil {
 			t.Error(err)
@@ -186,16 +186,16 @@ func TestParseField(t *testing.T) {
 
 	t.Run("If the field is an array it should have the Items and parse correctly", func(t *testing.T) {
 		_, err := parseField(map[string]any{
-			"Type": "array",
+			"type": "array",
 		})
 		if err == nil {
 			t.Error("Expected error because Items is not specified")
 		}
 
 		parsedField, err := parseField(map[string]any{
-			"Type": "array",
-			"Items": map[string]any{
-				"Type": "string",
+			"type": "array",
+			"items": map[string]any{
+				"type": "string",
 			},
 		})
 		if err != nil {
@@ -213,20 +213,20 @@ func TestParseField(t *testing.T) {
 
 	t.Run("If the field is a object it should have the Properties and parse correctly", func(t *testing.T) {
 		_, err := parseField(map[string]any{
-			"Type": "object",
+			"type": "object",
 		})
 		if err == nil {
 			t.Error("Expected error because Properties is not specified")
 		}
 
 		parsedField, err := parseField(map[string]any{
-			"Type": "object",
-			"Properties": map[string]any{
+			"type": "object",
+			"properties": map[string]any{
 				"foo": map[string]any{
-					"Type": "string",
+					"type": "string",
 				},
 				"bar": map[string]any{
-					"Type": "boolean",
+					"type": "boolean",
 				},
 			},
 		})

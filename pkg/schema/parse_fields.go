@@ -22,39 +22,40 @@ func parseFields(unparsedFields map[string]any) (map[string]Field, error) {
 }
 
 func parseField(rawUnparsedField any) (Field, error) {
+	// Remember that the rawUnparsedField is json like format (first letter is lowercase)
 	unparsedField, ok := rawUnparsedField.(map[string]any)
 	if !ok {
 		return Field{}, fmt.Errorf("field is not a map")
 	}
 
-	if _, ok := unparsedField["Type"].(string); !ok {
+	if _, ok := unparsedField["type"].(string); !ok {
 		return Field{}, fmt.Errorf("field is missing type")
 	}
 
-	isAllowedType := slices.Contains(PrimitiveTypes[:], unparsedField["Type"].(string))
-	isAllowedStructure := slices.Contains(DataStructures[:], unparsedField["Type"].(string))
+	isAllowedType := slices.Contains(PrimitiveTypes[:], unparsedField["type"].(string))
+	isAllowedStructure := slices.Contains(DataStructures[:], unparsedField["type"].(string))
 	if !isAllowedType && !isAllowedStructure {
 		return Field{}, nil
 	}
 
 	// Should be required by default
 	isRequired := true
-	unparsedRequired, ok := unparsedField["Required"].(bool)
+	unparsedRequired, ok := unparsedField["required"].(bool)
 	if ok {
 		isRequired = unparsedRequired
 	}
 
 	parsedField := Field{
 		Required: isRequired,
-		Type:     unparsedField["Type"].(string),
+		Type:     unparsedField["type"].(string),
 	}
 
-	if unparsedField["Type"] == "array" {
-		if _, ok := unparsedField["Items"]; !ok {
-			return Field{}, fmt.Errorf("array field should include Items")
+	if unparsedField["type"] == "array" {
+		if _, ok := unparsedField["items"]; !ok {
+			return Field{}, fmt.Errorf("array field should include items")
 		}
 
-		parsedItemsField, err := parseField(unparsedField["Items"])
+		parsedItemsField, err := parseField(unparsedField["items"])
 		if err != nil {
 			return Field{}, err
 		}
@@ -62,10 +63,10 @@ func parseField(rawUnparsedField any) (Field, error) {
 		parsedField.Items = &parsedItemsField
 	}
 
-	if unparsedField["Type"] == "object" {
-		rawProperties, ok := unparsedField["Properties"]
+	if unparsedField["type"] == "object" {
+		rawProperties, ok := unparsedField["properties"]
 		if !ok {
-			return Field{}, fmt.Errorf("object field should include Properties")
+			return Field{}, fmt.Errorf("object field should include properties")
 		}
 
 		unparsedProperties, ok := rawProperties.(map[string]any)

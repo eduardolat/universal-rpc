@@ -21,7 +21,7 @@ func TestParseEndpoints(t *testing.T) {
 
 		unparsed := map[string]any{
 			"foo": map[string]any{
-				"Params": map[string]any{},
+				"params": map[string]any{},
 			},
 		}
 
@@ -36,17 +36,17 @@ func TestParseEndpoints(t *testing.T) {
 
 		unparsed := map[string]any{
 			"foo": map[string]any{
-				"Params": map[string]any{
+				"params": map[string]any{
 					"foo": map[string]any{
-						"Type": "string",
+						"type": "string",
 					},
 					"bar": map[string]any{
-						"Type": "number",
+						"type": "number",
 					},
 				},
-				"Returns": map[string]any{
+				"returns": map[string]any{
 					"baz": map[string]any{
-						"Type": "string",
+						"type": "string",
 					},
 				},
 			},
@@ -71,29 +71,29 @@ func TestParseEndpoints(t *testing.T) {
 	t.Run("Correctly parse multiple endpoints", func(t *testing.T) {
 		unparsed := map[string]any{
 			"foo": map[string]any{
-				"Params": map[string]any{
+				"params": map[string]any{
 					"foo": map[string]any{
-						"Type": "string",
+						"type": "string",
 					},
 					"bar": map[string]any{
-						"Type": "number",
+						"type": "number",
 					},
 				},
-				"Returns": map[string]any{
+				"returns": map[string]any{
 					"baz": map[string]any{
-						"Type": "string",
+						"type": "string",
 					},
 				},
 			},
 			"bar": map[string]any{
-				"Params": map[string]any{
+				"params": map[string]any{
 					"bar": map[string]any{
-						"Type": "number",
+						"type": "number",
 					},
 				},
-				"Returns": map[string]any{
+				"returns": map[string]any{
 					"biz": map[string]any{
-						"Type": "string",
+						"type": "string",
 					},
 				},
 			},
@@ -122,7 +122,7 @@ func TestParseEndpoints(t *testing.T) {
 
 		unparsed := map[string]any{
 			"foo": map[string]any{
-				"Bar": map[string]any{},
+				"bar": map[string]any{},
 			},
 		}
 

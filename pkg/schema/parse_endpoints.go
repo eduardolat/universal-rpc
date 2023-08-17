@@ -31,16 +31,16 @@ func parseEndpoint(endpointName string, unparsedEndpoint any) (Endpoint, error) 
 		return Endpoint{}, nil
 	}
 
-	unparsedParams, ok := endpointValue["Params"].(map[string]any)
+	unparsedParams, ok := endpointValue["params"].(map[string]any)
 	if !ok {
-		return Endpoint{}, fmt.Errorf("params in %s is not a map: %v", endpointName, endpointValue["Params"])
+		return Endpoint{}, fmt.Errorf("params in %s is not a map: %v", endpointName, endpointValue["params"])
 	}
 	parsedParams, err := parseFields(unparsedParams)
 	if err != nil {
 		return Endpoint{}, err
 	}
 
-	unparsedReturns, hasReturns := endpointValue["Returns"].(map[string]any)
+	unparsedReturns, hasReturns := endpointValue["returns"].(map[string]any)
 	if !hasReturns && len(endpointValue) > 1 {
 		return Endpoint{}, fmt.Errorf("endpoint %s can only have params and returns", endpointName)
 	}
