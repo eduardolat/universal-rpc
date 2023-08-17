@@ -5,29 +5,6 @@ import (
 	"fmt"
 )
 
-func ParseSchema(unparsedSchema UnparsedSchema) (Schema, error) {
-	var parsedSchema Schema
-
-	version, ok := unparsedSchema["version"].(float64)
-	if !ok {
-		return Schema{}, errors.New("version not found or is not a number")
-	}
-	parsedSchema.Version = int(version)
-
-	// Pass the top level map to parseRouter because it is a top level router
-	// and it will recursively call parseRouter for each nested router.
-	router, err := parseRouter(unparsedSchema)
-	if err != nil {
-		return Schema{}, err
-	}
-
-	parsedSchema.Routers = router.Routers
-	parsedSchema.Queries = router.Queries
-	parsedSchema.Mutations = router.Mutations
-
-	return parsedSchema, nil
-}
-
 // Function that parses a router and returns a Router struct including
 // its queries, mutations and nested routers.
 func parseRouter(unparsedRouter map[string]any) (Router, error) {
@@ -47,7 +24,7 @@ func parseRouter(unparsedRouter map[string]any) (Router, error) {
 				return Router{}, errors.New("queries is not a map")
 			}
 
-			parsedQueries, err := parseQueries(unparsedQueries)
+			parsedQueries, err := parseEndpoints(unparsedQueries)
 			if err != nil {
 				return Router{}, err
 			}
@@ -60,7 +37,7 @@ func parseRouter(unparsedRouter map[string]any) (Router, error) {
 				return Router{}, errors.New("mutations is not a map")
 			}
 
-			parsedMutations, err := parseMutations(unparsedMutations)
+			parsedMutations, err := parseEndpoints(unparsedMutations)
 			if err != nil {
 				return Router{}, err
 			}
@@ -103,12 +80,4 @@ func parseRouter(unparsedRouter map[string]any) (Router, error) {
 	}
 
 	return parsedRouter, nil
-}
-
-func parseQueries(unparsedQueries map[string]any) (map[string]Endpoint, error) {
-	return nil, nil
-}
-
-func parseMutations(unparsedMutations map[string]any) (map[string]Endpoint, error) {
-	return nil, nil
 }

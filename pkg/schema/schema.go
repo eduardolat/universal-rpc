@@ -30,7 +30,7 @@ type Endpoint struct {
 
 type Field struct {
 	Type       string
-	Required   bool
+	Required   bool // <- Must be required by default (set by the parser)
 	Items      *Field
-	Properties map[string]Field
+	Properties map[string]*Field
 }
