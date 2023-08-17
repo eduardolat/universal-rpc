@@ -8,7 +8,9 @@ import (
 
 func main() {
 
-	unparsedSchema, err := schema.LoadJsonSchemaFromFile("test-schema.json")
+	loader := schema.JsonSchemaLoader{}
+
+	unparsedSchema, err := loader.LoadSchemaFromFile("test-schema.json")
 	if err != nil {
 		panic(err)
 	}
