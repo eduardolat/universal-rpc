@@ -138,3 +138,46 @@ func TestParseSchema(t *testing.T) {
 	})
 
 }
+
+func TestParseVersion(t *testing.T) {
+	t.Run("should parse a int version correctly", func(t *testing.T) {
+		unparsed := map[string]any{
+			"version": 1,
+		}
+
+		version, err := parseVersion(unparsed)
+		if err != nil {
+			t.Fatalf("expected nil, got %v", err)
+		}
+
+		if version != 1 {
+			t.Fatalf("expected 1, got %v", version)
+		}
+	})
+
+	t.Run("should parse a float64 version correctly", func(t *testing.T) {
+		unparsed := map[string]any{
+			"version": 1.1234,
+		}
+
+		version, err := parseVersion(unparsed)
+		if err != nil {
+			t.Fatalf("expected nil, got %v", err)
+		}
+
+		if version != 1 {
+			t.Fatalf("expected 1, got %v", version)
+		}
+	})
+
+	t.Run("should throw an error if version is not a number", func(t *testing.T) {
+		unparsed := map[string]any{
+			"version": "1",
+		}
+
+		_, err := parseVersion(unparsed)
+		if err == nil {
+			t.Fatal("expected error, got nil")
+		}
+	})
+}
