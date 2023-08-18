@@ -7,7 +7,7 @@ import (
 func ParseSchema(unparsedSchema UnparsedSchema) (Schema, error) {
 	var parsedSchema Schema
 
-	version, ok := unparsedSchema["version"].(int)
+	version, ok := unparsedSchema["version"].(float64)
 	if !ok {
 		return Schema{}, errors.New("version not found or is not a number")
 	}
